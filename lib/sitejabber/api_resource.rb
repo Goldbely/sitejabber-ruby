@@ -1,18 +1,24 @@
 module Sitejabber
   class ApiResource
+    MUTEX = Mutex.new
+
     def initialize; end
 
     def request path, verb: "get", params: {}, options: {}
-      _renew_token if Auth::Token.expired?
+      MUTEX.synchronize do
+        begin
+          _renew_token if Auth::Token.expired?
 
-      _call_api path, verb, params, options
-    rescue AuthenticationError => ae
-      if [ 203, 204, 206, 207 ].include? ae.error_info[ "errorCode" ]
-        # Invalid token/session, try again
-        _renew_token
-        _call_api path, verb, params, options
-      else
-        raise ae
+          _call_api path, verb, params, options
+        rescue AuthenticationError => ae
+          if [ 203, 204, 206, 207 ].include? ae.error_info[ "errorCode" ]
+            # Invalid token/session, try again
+            _renew_token
+            _call_api path, verb, params, options
+          else
+            raise ae
+          end
+        end
       end
     end
 
