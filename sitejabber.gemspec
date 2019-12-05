@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Sitejabber API integration.}
   spec.description   = %q{Basic Sitejabber API integration.}
-  spec.homepage      = "https://github.com/Goldbely/sitejabber"
+  spec.homepage      = "https://github.com/Goldbely/sitejabber-ruby"
   spec.license       = "MIT"
 
   # Specify which files should be added to the gem when it is released.
