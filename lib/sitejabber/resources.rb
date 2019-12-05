@@ -1,0 +1,7 @@
+require "sitejabber/resources/business"
+require "sitejabber/resources/comment"
+require "sitejabber/resources/message"
+require "sitejabber/resources/product"
+require "sitejabber/resources/product_review"
+require "sitejabber/resources/review"
+require "sitejabber/resources/review_request"
