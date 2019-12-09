@@ -1,8 +1,6 @@
 # Sitejabber
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/sitejabber`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This is a basic integration to Sitejabber's API.
 
 ## Installation
 
@@ -20,15 +18,66 @@ Or install it yourself as:
 
     $ gem install sitejabber
 
+## Configuration
+
+There are a few settings that have to be set globally:
+
+```ruby
+# In Rails, you could put this in config/initializers/sitejabber.rb
+Sitejabber.redis = ConnectionPool.new { Redis.new( url: REDIS_URL ) }
+
+# Required
+Sitejabber.api_key = MY_API_KEY
+Sitejabber.api_email = MY_API_EMAIL
+Sitejabber.api_password = MY_API_PASSWORD
+
+# Optional
+Sitejabber.default_domain = MY_DEFAULT_DOMAIN # ex: github.com
+```
+
+**Note Important Note:** This gem requires Redis to work. It uses a Redis server to store access tokens.
+
 ## Usage
 
-TODO: Write usage instructions here
+### Reviews
+
+If you set your domain globally, you can do:
+
+```ruby
+Sitejabber::Review.new.create(
+  first_name: 'John',
+  last_name: 'Doe',
+  email: 'foo@bar.com',
+  title: 'This is awesome!!!',
+  rating: '5',
+  content: 'Fell in love first week of owning.',
+  order_id: 'ABC123'  
+)
+
+# Check Sitejabber API docs for required and optional parameters.
+```
+
+You can also specify your domain by review, for example:
+
+```ruby
+Sitejabber::Review.new("github.com").create(
+  first_name: 'John',
+  last_name: 'Doe',
+  email: 'foo@bar.com',
+  title: 'This is awesome!!!',
+  rating: '5',
+  content: 'Fell in love first week of owning.',
+  order_id: 'ABC123'  
+)
+
+# Check Sitejabber API docs for required and optional parameters.
+```
+
+TODO: add more examples
 
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
